@@ -1,0 +1,38 @@
+{
+    "name": "emiple.app",
+    "version": "1.0.0",
+    "private": true,
+    "description": "emiple.com mobile application",
+    "keywords": [],
+    "author": "Hongtao Chen",
+    "license": "MIT",
+    "homepage": "https://github.com/hongtao-chen/emiple.app#readme",
+    "bugs": {
+        "url": "https://github.com/hongtao-chen/emiple.app/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hongtao-chen/emiple.app.git"
+    },
+    "scripts": {
+        "start": "react-native start",
+        "android": "react-native run-android"
+    },
+    "dependencies": {
+        "react": "19.2.0",
+        "react-native": "0.82.1",
+        "@react-native/new-app-screen": "0.82.1",
+        "react-native-safe-area-context": "5.6.2"
+    },
+    "devDependencies": {
+        "@babel/core": "7.28.5",
+        "@babel/preset-env": "7.28.5",
+        "@babel/runtime": "7.28.4",
+        "@react-native-community/cli": "20.0.2",
+        "@react-native-community/cli-platform-android": "20.0.2",
+        "@react-native/babel-preset": "0.82.1",
+        "@react-native/metro-config": "0.82.1",
+        "babel-plugin-module-resolver": "5.0.2",
+        "metro-react-native-babel-preset": "0.77.0"
+    }
+}
