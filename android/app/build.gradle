@@ -10,7 +10,6 @@ def enableProguardInReleaseBuilds = false
 
 android {
     ndkVersion rootProject.ext.ndkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace "com.emiple"
@@ -33,6 +32,8 @@ android {
     }
     buildTypes {
         release {
+            manifestPlaceholders = [usesCleartextTraffic: "true"]
+
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"

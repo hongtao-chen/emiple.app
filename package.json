@@ -19,9 +19,8 @@
         "android": "react-native run-android"
     },
     "dependencies": {
-        "react": "19.2.0",
+        "react": "19.1.1",
         "react-native": "0.82.1",
-        "@react-native/new-app-screen": "0.82.1",
         "react-native-safe-area-context": "5.6.2"
     },
     "devDependencies": {
