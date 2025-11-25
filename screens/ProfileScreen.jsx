@@ -38,14 +38,18 @@ export default function ProfileScreen({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Text variant="bodyMedium">
-        Select an investment Style. The AI uses it to tailor the analysis.
-      </Text>
+      <Text variant="bodyMedium">Select investment Style</Text>
 
       <View style={styles.chipRow}>
         {['Conservative', 'Growth', 'Day Trader'].map((item) => (
           <View key={item} style={styles.chipContainer}>
-            <Chip selected={kind === item} showSelectedOverlay onPress={() => setKind(item)} style={styles.chip}>
+            <Chip
+              compact
+              selected={kind === item}
+              showSelectedOverlay
+              onPress={() => setKind(item)}
+              style={styles.chip}
+              textStyle={styles.chipText}>
               {item}
             </Chip>
           </View>
@@ -64,7 +68,7 @@ export default function ProfileScreen({ navigation }) {
       />
 
       <Button mode="contained" icon="check" onPress={handleSave} contentStyle={{ flexDirection: 'row-reverse' }} style={{ marginTop: 10 }}>
-        Save Context
+        Save Profile
       </Button>
 
       <Button mode="outlined" icon="key" onPress={handleChangeKey} style={{ borderColor: theme.colors.outline, marginTop: 10 }}>
@@ -72,7 +76,7 @@ export default function ProfileScreen({ navigation }) {
       </Button>
 
       <Button mode="text" onPress={handleClear} textColor={theme.colors.error}>
-        Clear Context & Return
+        Clear Profile & Return
       </Button>
     </ScrollView>
   );
@@ -81,7 +85,8 @@ export default function ProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: { flexGrow: 1, padding: 10 },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -6 },
-  chipContainer: { paddingHorizontal: 6, paddingVertical: 6 },
-  chip: { width: '100%' },
+  chipContainer: { paddingHorizontal: 3, paddingVertical: 6 },
+  chip: { alignSelf: 'flex-start', paddingVertical: 1, paddingHorizontal: 3, borderRadius: 16 },
+  chipText: { fontSize: 12, lineHeight: 14 },
   textArea: { minHeight: 400, textAlignVertical: 'top' }
 });
