@@ -1,61 +1,65 @@
+import { useColorScheme } from 'react-native';
+import { NavigationContainer, DarkTheme as NavigationDarkTheme, DefaultTheme as NavigationDefaultTheme } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Provider as PaperProvider, MD3DarkTheme, MD3LightTheme, adaptNavigationTheme, IconButton } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import {
-    StatusBar,
-    StyleSheet,
-    useColorScheme,
-    View,
-    Linking
-} from 'react-native';
-import {
-    PaperProvider,
-    MD3DarkTheme,
-    MD3LightTheme,
-    Text,
-    Button,
-    useTheme
-} from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function App() {
-    const isDarkMode = useColorScheme() === 'dark';
-    const paperTheme = isDarkMode ? MD3DarkTheme : MD3LightTheme;
+import AuthScreen from './screens/AuthScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import AnalysisScreen from './screens/AnalysisScreen';
 
-    return (
-        <SafeAreaProvider>
-            <PaperProvider theme={paperTheme}>
-                <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-                <AppContent />
-            </PaperProvider>
-        </SafeAreaProvider>
-    );
-}
+const Stack = createNativeStackNavigator();
 
-function AppContent() {
-    const theme = useTheme();
-
-    const openLink = () => {
-        Linking.openURL('https://google.com');
-    };
-
-    return (
-        <View style={[
-            styles.container,
-            { backgroundColor: theme.colors.background }
-        ]}>
-            <Text variant="titleLarge">Card Title</Text>
-
-            <Text variant="bodyMedium">
-              This text now adapts to system settings.
-            </Text>
-
-            <Button mode="contained" onPress={openLink}>Paper Button</Button>
-        </View>
-    );
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    }
+const { LightTheme, DarkTheme } = adaptNavigationTheme({
+  reactNavigationLight: NavigationDefaultTheme,
+  reactNavigationDark: NavigationDarkTheme,
 });
 
-export default App;
+export default function App() {
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
+  const paperTheme = isDarkMode ? MD3DarkTheme : MD3LightTheme;
+  const navigationTheme = isDarkMode ? DarkTheme : LightTheme;
+
+  return (
+    <SafeAreaProvider>
+      <PaperProvider
+        theme={paperTheme}
+        settings={{ icon: props => <MaterialCommunityIcons {...props} /> }}
+      >
+        <NavigationContainer theme={navigationTheme}>
+          <Stack.Navigator initialRouteName="Auth">
+
+            <Stack.Screen
+              name="Auth"
+              component={AuthScreen}
+              options={{ headerShown: false }}
+            />
+
+            <Stack.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={{ title: 'Investor Context' }}
+            />
+
+            <Stack.Screen
+              name="Analysis"
+              component={AnalysisScreen}
+              options={({ navigation }) => ({
+                title: 'Market Sentiment',
+                headerRight: () => (
+                  <IconButton
+                    icon="account-cog"
+                    onPress={() => navigation.navigate('Profile')}
+                  />
+                ),
+              })}
+            />
+
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </SafeAreaProvider>
+  );
+}
