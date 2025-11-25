@@ -4,22 +4,18 @@ import { Text, TextInput, Button, Chip, Divider, useTheme } from 'react-native-p
 import * as Keychain from 'react-native-keychain';
 
 export default function ProfileScreen({ navigation }) {
-  const [investmentStyle, setInvestmentStyle] = useState('Growth');
+  const [kind, setKind] = useState('Growth');
   const [strategy, setStrategy] = useState('');
 
   const theme = useTheme();
 
   useEffect(() => {
     const loadProfile = async () => {
-      try {
-        const creds = await Keychain.getGenericPassword({ service: 'user_profile' });
-        if (creds && creds.password) {
-          const p = JSON.parse(creds.password);
-          if (p.style) setInvestmentStyle(p.style);
-          if (p.strategy) setStrategy(p.strategy);
-        }
-      } catch (e) {
-        console.error('Failed to load profile', e);
+      const info = await Keychain.getGenericPassword({ service: 'profile' });
+      if (info && info.password) {
+        const p = JSON.parse(info.password);
+        if (p.kind) setKind(p.kind);
+        if (p.strategy) setStrategy(p.strategy);
       }
     };
 
@@ -27,21 +23,13 @@ export default function ProfileScreen({ navigation }) {
   }, []);
 
   const handleSave = async () => {
-    try {
-      await Keychain.setGenericPassword('profile', JSON.stringify({ style: investmentStyle, strategy }), { service: 'user_profile' });
-      navigation.navigate('Analysis');
-    } catch (e) {
-      console.error('Failed to save profile', e);
-    }
+    await Keychain.setGenericPassword('profile', JSON.stringify({ kind, strategy }), { service: 'profile' });
+    navigation.navigate('Analysis');
   };
 
   const handleClear = async () => {
-    try {
-      await Keychain.resetGenericPassword({ service: 'user_profile' });
-      navigation.navigate('Analysis');
-    } catch (e) {
-      console.error('Failed to clear profile', e);
-    }
+    await Keychain.resetGenericPassword({ service: 'profile' });
+    navigation.navigate('Analysis');
   };
 
   const handleChangeKey = () => {
@@ -50,45 +38,36 @@ export default function ProfileScreen({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Text variant="bodyLarge">
-        Update your investor profile here. The AI uses this to tailor the analysis.
+      <Text variant="bodyMedium">
+        Select an investment Style. The AI uses it to tailor the analysis.
       </Text>
 
-      <Text variant="titleMedium">Investment Style</Text>
-
       <View style={styles.chipRow}>
-        {['Conservative', 'Growth', 'Day Trader'].map((style) => (
-          <View key={style} style={styles.chipContainer}>
-            <Chip
-              selected={investmentStyle === style}
-              showSelectedOverlay
-              onPress={() => setInvestmentStyle(style)}
-              style={styles.chip}
-            >
-              {style}
+        {['Conservative', 'Growth', 'Day Trader'].map((item) => (
+          <View key={item} style={styles.chipContainer}>
+            <Chip selected={kind === item} showSelectedOverlay onPress={() => setKind(item)} style={styles.chip}>
+              {item}
             </Chip>
           </View>
         ))}
       </View>
 
       <TextInput
-        label="Investment Strategy & Focus"
-        placeholder="Describe your strategy, preferred sectors, or any specific constraints (e.g. 'I focus on AI and Green Energy, but avoid crypto')."
+        label="Personal Strategy & Focus"
+        placeholder="Describe your investment strategy, preferred sectors, or any specific constraints (e.g. 'I focus on AI and Green Energy, but avoid crypto')."
         value={strategy}
         onChangeText={setStrategy}
         mode="outlined"
         multiline={true}
-        numberOfLines={10}
+        numberOfLines={20}
         style={styles.textArea}
       />
 
-      <Divider />
-
-      <Button mode="contained" icon="check" onPress={handleSave} contentStyle={{ flexDirection: 'row-reverse' }}>
+      <Button mode="contained" icon="check" onPress={handleSave} contentStyle={{ flexDirection: 'row-reverse' }} style={{ marginTop: 10 }}>
         Save Context
       </Button>
 
-      <Button mode="outlined" icon="key" onPress={handleChangeKey} style={{ borderColor: theme.colors.outline }}>
+      <Button mode="outlined" icon="key" onPress={handleChangeKey} style={{ borderColor: theme.colors.outline, marginTop: 10 }}>
         Change API Key
       </Button>
 
@@ -100,9 +79,9 @@ export default function ProfileScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flexGrow: 1, padding: 20 },
+  container: { flexGrow: 1, padding: 10 },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -6 },
-  chipContainer: { flexBasis: '33.333%', paddingHorizontal: 6, paddingVertical: 6 },
+  chipContainer: { paddingHorizontal: 6, paddingVertical: 6 },
   chip: { width: '100%' },
-  textArea: { minHeight: 200, textAlignVertical: 'top' }
+  textArea: { minHeight: 400, textAlignVertical: 'top' }
 });

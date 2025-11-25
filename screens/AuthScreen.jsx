@@ -13,10 +13,8 @@ export default function AuthScreen({ navigation, route }) {
     async function checkKey() {
       if (isUpdate) return;
 
-      try {
-        const credentials = await Keychain.getGenericPassword();
-        if (credentials) navigation.replace('Analysis');
-      } catch (e) {}
+      const credentials = await Keychain.getGenericPassword();
+      if (credentials) navigation.replace('Analysis');
     }
     checkKey();
   }, [isUpdate]);

@@ -12,54 +12,30 @@ import AnalysisScreen from './screens/AnalysisScreen';
 const Stack = createNativeStackNavigator();
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
-  reactNavigationLight: NavigationDefaultTheme,
-  reactNavigationDark: NavigationDarkTheme,
+    reactNavigationLight: NavigationDefaultTheme,
+    reactNavigationDark: NavigationDarkTheme,
 });
 
 export default function App() {
-  const colorScheme = useColorScheme();
-  const isDarkMode = colorScheme === 'dark';
-  const paperTheme = isDarkMode ? MD3DarkTheme : MD3LightTheme;
-  const navigationTheme = isDarkMode ? DarkTheme : LightTheme;
+    const isDarkMode = useColorScheme() === 'dark';
+    const paperTheme = isDarkMode ? MD3DarkTheme : MD3LightTheme;
+    const navigationTheme = isDarkMode ? DarkTheme : LightTheme;
 
-  return (
-    <SafeAreaProvider>
-      <PaperProvider
-        theme={paperTheme}
-        settings={{ icon: props => <MaterialCommunityIcons {...props} /> }}
-      >
-        <NavigationContainer theme={navigationTheme}>
-          <Stack.Navigator initialRouteName="Auth">
-
-            <Stack.Screen
-              name="Auth"
-              component={AuthScreen}
-              options={{ headerShown: false }}
-            />
-
-            <Stack.Screen
-              name="Profile"
-              component={ProfileScreen}
-              options={{ title: 'Investor Context' }}
-            />
-
-            <Stack.Screen
-              name="Analysis"
-              component={AnalysisScreen}
-              options={({ navigation }) => ({
-                title: 'Market Sentiment',
-                headerRight: () => (
-                  <IconButton
-                    icon="account-cog"
-                    onPress={() => navigation.navigate('Profile')}
-                  />
-                ),
-              })}
-            />
-
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
-    </SafeAreaProvider>
-  );
+    return (
+        <SafeAreaProvider>
+            <PaperProvider theme={paperTheme} settings={{ icon: props => <MaterialCommunityIcons {...props} /> }}            >
+                <NavigationContainer theme={navigationTheme}>
+                    <Stack.Navigator initialRouteName="Auth">
+                        <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
+                        <Stack.Screen name="Analysis" component={AnalysisScreen}
+                            options={({ navigation }) => ({
+                                title: 'Market Sentiment',
+                                headerRight: () => (<IconButton icon="account-cog" onPress={() => navigation.navigate('Profile')} />),
+                            })} />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </PaperProvider>
+        </SafeAreaProvider>
+    );
 }
