@@ -25,7 +25,7 @@ export default function App() {
         <SafeAreaProvider>
             <PaperProvider theme={paperTheme} settings={{ icon: props => <MaterialCommunityIcons {...props} /> }}            >
                 <NavigationContainer theme={navigationTheme}>
-                    <Stack.Navigator initialRouteName="Auth">
+                    <Stack.Navigator initialRouteName="Analysis">
                         <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
                         <Stack.Screen name="Analysis" component={AnalysisScreen}

@@ -38,7 +38,7 @@ export default function ProfileScreen({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Text variant="bodyMedium">Select investment Style</Text>
+      <Text variant="bodyMedium">Select your investment style</Text>
 
       <View style={styles.chipRow}>
         {['Conservative', 'Growth', 'Day Trader'].map((item) => (
@@ -67,7 +67,7 @@ export default function ProfileScreen({ navigation }) {
         style={styles.textArea}
       />
 
-      <Button mode="contained" icon="check" onPress={handleSave} contentStyle={{ flexDirection: 'row-reverse' }} style={{ marginTop: 10 }}>
+      <Button mode="contained" icon="check" onPress={handleSave} style={{ marginTop: 10 }}>
         Save Profile
       </Button>
 

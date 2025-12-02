@@ -4,7 +4,7 @@ import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 import Markdown from 'react-native-markdown-display';
 import * as Keychain from 'react-native-keychain';
 
-export default function AnalysisScreen({ route }) {
+export default function AnalysisScreen({ navigation, route }) {
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState('**Loading**');
   const [profile, setProfile] = useState({});
@@ -34,6 +34,12 @@ export default function AnalysisScreen({ route }) {
   };
 
   useEffect(() => {
+    async function checkKey() {
+      const credentials = await Keychain.getGenericPassword();
+      if (!credentials) navigation.replace('Auth');
+    }
+    checkKey();
+
     const loadProfile = async () => {
       const info = await Keychain.getGenericPassword({ service: 'profile' });
       if (info && info.password) setProfile(JSON.parse(info.password));
