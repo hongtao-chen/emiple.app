@@ -1,7 +1,7 @@
 import { useColorScheme } from 'react-native';
 import { NavigationContainer, DarkTheme as NavigationDarkTheme, DefaultTheme as NavigationDefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Provider as PaperProvider, MD3DarkTheme, MD3LightTheme, adaptNavigationTheme, IconButton } from 'react-native-paper';
+import { Provider as PaperProvider, MD3DarkTheme, MD3LightTheme, adaptNavigationTheme } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -28,11 +28,7 @@ export default function App() {
                     <Stack.Navigator initialRouteName="Analysis">
                         <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
-                        <Stack.Screen name="Analysis" component={AnalysisScreen}
-                            options={({ navigation }) => ({
-                                title: 'Market Sentiment',
-                                headerRight: () => (<IconButton icon="account-cog" onPress={() => navigation.navigate('Profile')} />),
-                            })} />
+                        <Stack.Screen name="Analysis" component={AnalysisScreen} options={{ title: 'Market Sentiment' }} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </PaperProvider>
